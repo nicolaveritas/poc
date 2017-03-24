@@ -1,0 +1,29 @@
+version: '2'
+services:
+   node-red:
+      build: ./node-red
+      ports:
+         - "1880:1880"
+      volumes:
+         - ./node-red/data:/data
+   influxdb:
+      image: tutum/influxdb
+      ports:
+         - "8083:8083"
+         - "8086:8086"
+      volumes:
+         - ./influxdb:/var/lib/influxdb
+      environment:
+         PRE_CREATE_DB: metrics
+   mosquitto:
+      image: eclipse-mosquitto
+      ports:
+         - "1883:1883"
+         - "9001:9001"
+      volumes:
+         - ./mosquitto:/mosquitto/data
+
+volumes:
+   node-red:
+   influxdb:
+   mosquitto:
