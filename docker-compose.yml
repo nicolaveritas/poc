@@ -1,5 +1,12 @@
 version: '2'
 services:
+   mosquitto:
+      image: eclipse-mosquitto
+      ports:
+         - "1883:1883"
+         - "9001:9001"
+      volumes:
+         - ./mosquitto:/mosquitto/data
    node-red:
       build: ./node-red
       ports:
@@ -15,15 +22,17 @@ services:
          - ./influxdb:/var/lib/influxdb
       environment:
          PRE_CREATE_DB: metrics
-   mosquitto:
-      image: eclipse-mosquitto
-      ports:
-         - "1883:1883"
-         - "9001:9001"
+   chronograf:
+      image: chronograf
+      ports: 
+         - "10000:10000"
       volumes:
-         - ./mosquitto:/mosquitto/data
+         - ./chronograf:/var/lib/chronograf
+      environment:
+         CHRONOGRAF_LOCAL_DATABASE: /var/lib/chronograf/chronograf.db
 
 volumes:
+   mosquitto:
    node-red:
    influxdb:
-   mosquitto:
+   chronograf:
